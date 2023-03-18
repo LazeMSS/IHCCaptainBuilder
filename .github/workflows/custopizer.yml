@@ -18,12 +18,12 @@ jobs:
         run: |
           mkdir build
           cd build
+          
           curl -q -L -o image.xz ${{ github.event.inputs.input_image }}
 
           xz -d image.xz
           
-          rm ${{ github.event.inputs.input_image }}
-
+          rm image.xz
           mv image input.img
 
       - name: "🏃 Run CustoPiZer"
