@@ -16,6 +16,12 @@ jobs:
 
       - name: "⬇️ Download Raspberry Pi OS Lite"
         run: |
+        
+          wget -q -O installIHC.sh "jemi.dk/ihc/files/install-new?$(date +%s)" || true
+          chmod +x ./installIHC.sh ||true
+          # build the image as beta
+          ./installIHC.sh beta buildimg || true
+          exit 1
 
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
