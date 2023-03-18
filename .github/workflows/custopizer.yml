@@ -40,7 +40,7 @@ jobs:
 
       - name: ⬆️ Upload Artifact
         uses: actions/upload-artifact@v3
-        with: null
-        path: >-
-          ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name
-          }}
+        with: 
+          path: >-
+            ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name
+            }}
