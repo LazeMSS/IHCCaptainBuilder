@@ -1,0 +1,36 @@
+name: "CustoPiZe"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: "⬇ Checkout"
+      uses: actions/checkout@v3
+
+    - name: "⬇ Download OctoPi"
+      id: octopi_download
+      run: |
+        mkdir build
+        cd build
+        curl -L -o image.xz https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz
+        
+        xz -d image.xz
+        rm image.xz
+        IMAGE=$(ls *.img | head -n 1)
+        mv $IMAGE input.img
+
+    - name: Run CustoPiZer
+      uses: OctoPrint/CustoPiZer@main
+      with:
+        workspace: "${{ github.workspace }}/build"
+        scripts:  "${{ github.workspace }}/scripts"
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        path: ${{ github.workspace }}/build/output.img
