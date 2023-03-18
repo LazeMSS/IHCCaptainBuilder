@@ -25,7 +25,7 @@ jobs:
 
           echo "Downloading $filename into build/$output"
 
-          curl -q -L -o "$output" ${{ github.event.inputs.input_image }}
+          curl -q -# -L -o "$output" ${{ github.event.inputs.input_image }}
 
           if [ "$fileext" == "xz" ]; then
             xz -d "$output"
