@@ -1,33 +1,46 @@
-name: "CustoPiZe"
-
-on:
+name: CustoPiZe
+'on':
   workflow_dispatch:
-
+    inputs:
+      input_image:
+        description: The base image to use as input for CustoPiZer
+        required: true
+        default: >-
+          https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz
 jobs:
   build:
-    name: "Build"
+    name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: 🛒 Checkout repo
+        uses: actions/checkout@v3
 
-    - name: "⬇ Checkout"
-      uses: actions/checkout@v3
+      - name: ⬇️ Download Raspberry Pi OS Lite
+        run: >
+          mkdir build
+          cd build
 
-    - name: "⬇ Download Raspberry Pi OS Lite"
-      run: |
-        mkdir build
-        cd build
-        curl -q -L -o image.xz https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz
-        
-        xz -d image.xz
-        mv image input.img
+          curl -q -L -o image.xz
+          https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz
 
-    - name: Run CustoPiZer
-      uses: OctoPrint/CustoPiZer@main
-      with:
-        workspace: "${{ github.workspace }}/build"
-        scripts:  "${{ github.workspace }}/scripts"
+          xz -d image.xz
+          rm ${{ github.event.inputs.input_image }}
+          mv image input.img
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        path: ${{ github.workspace }}/build/output.img
+      - name: 🏃 Run CustoPiZer
+        uses: OctoPrint/CustoPiZer@main
+        with:
+          workspace: '${{ github.workspace }}/build'
+          scripts: '${{ github.workspace }}/scripts'
+
+      - name: 📦 Package the image
+        uses: OctoPrint/actions/package-rpi-image@main
+        with:
+          image_path: '${{ github.workspace }}/build/output.img'
+
+      - name: ⬆️ Upload Artifact
+        uses: actions/upload-artifact@v3
+        with: null
+        path: >-
+          ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name
+          }}
