@@ -19,16 +19,17 @@ jobs:
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
           output="image.$fileext"
-          
-          echo "Downloading $filename into $output"
 
           mkdir build
           cd build
-          
+
+          echo "Downloading $filename into build/$output"
+
           curl -q -L -o "$output" ${{ github.event.inputs.input_image }}
 
           if [ "$fileext" == "xz" ]; then
             xz -d "$output"
+            mv image input.img
           else      
             unzip "$output"
             rm "$output"
