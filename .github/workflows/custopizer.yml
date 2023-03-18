@@ -16,7 +16,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        curl -L -o image.xz https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz
+        curl -q -L -o image.xz https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz
         
         xz -d image.xz
         mv image input.img
