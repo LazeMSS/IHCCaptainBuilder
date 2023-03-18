@@ -17,17 +17,23 @@ jobs:
       - name: "⬇️ Download Raspberry Pi OS Lite"
         run: |
           filename=$(basename "${{ github.event.inputs.input_image }}")
-          echo $filename
-          echo "${filename##*.}"
-          exit 1
+          fileext="${filename##*.}"
+          output="image.$fileext"
+          echo $output
+
           mkdir build
           cd build
           
-          curl -q -L -o image.xz ${{ github.event.inputs.input_image }}
+          curl -q -L -o $output ${{ github.event.inputs.input_image }}
 
-          xz -d image.xz
-
-          mv image input.img
+          if [ "$fileext" == "xz" ]; then
+            xz -d image.xz
+          else      
+            unzip $output
+            rm $output
+            IMAGE=$(ls *.img | head -n 1)
+            mv $IMAGE input.img
+          fi
 
       - name: "🏃 Run CustoPiZer"
         uses: OctoPrint/CustoPiZer@main
