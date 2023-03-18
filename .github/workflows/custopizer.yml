@@ -14,7 +14,7 @@ jobs:
       - name: "🛒 Checkout repo"
         uses: actions/checkout@v3
 
-      - name: "⬇️ Download Raspberry Pi OS Lite"
+      - name: "⬇️ Download Raspberry base img"
         run: |
           echo "Preparing download of ${{ github.event.inputs.input_image }}"
           filename=$(basename "${{ github.event.inputs.input_image }}")
@@ -26,7 +26,7 @@ jobs:
 
           echo "Downloading $filename into build/$output"
 
-          curl -q -# -L -o "$output" ${{ github.event.inputs.input_image }}
+          curl -q --no-progress-meter -L -o "$output" ${{ github.event.inputs.input_image }}
 
           if [ "$fileext" == "xz" ]; then
             xz -d "$output"
