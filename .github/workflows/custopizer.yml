@@ -16,7 +16,7 @@ jobs:
 
       - name: "⬇️ Download Raspberry Pi OS Lite"
         run: |
-          filename=$(basename "$filepath")
+          filename=$(basename "${{ github.event.inputs.input_image }}")
           echo $filename
           echo "${filename##*.}"
           exit 1
