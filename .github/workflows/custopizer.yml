@@ -14,8 +14,9 @@ jobs:
       - name: "🛒 Checkout repo"
         uses: actions/checkout@v3
 
-      - name: "⬇️ Download Raspberry base img"
+      - name: "⬇️ Download Raspberry Pi OS Lite"
         run: |
+
           echo "Preparing download of ${{ github.event.inputs.input_image }}"
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
