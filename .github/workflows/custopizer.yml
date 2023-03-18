@@ -16,6 +16,7 @@ jobs:
 
       - name: "⬇️ Download Raspberry Pi OS Lite"
         run: |
+          echo "Preparing download of ${{ github.event.inputs.input_image }}"
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
           output="image.$fileext"
@@ -25,7 +26,7 @@ jobs:
 
           echo "Downloading $filename into build/$output"
 
-          curl -q --no-progress-meter -L -o "$output" ${{ github.event.inputs.input_image }}
+          curl -q -# -L -o "$output" ${{ github.event.inputs.input_image }}
 
           if [ "$fileext" == "xz" ]; then
             xz -d "$output"
@@ -36,6 +37,8 @@ jobs:
             IMAGE=$(ls *.img | head -n 1)
             mv "$IMAGE" input.img
           fi
+
+          echo "Download completed..."
 
       - name: "🏃 Run CustoPiZer"
         uses: OctoPrint/CustoPiZer@main
