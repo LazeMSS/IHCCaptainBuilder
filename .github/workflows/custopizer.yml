@@ -16,13 +16,6 @@ jobs:
 
       - name: "⬇️ Download Raspberry Pi OS Lite"
         run: |
-          if [ "${{ github.event.inputs.input_image }}" == "debug" ]; then
-            mkdir build
-            cp "${{ github.workspace }}/debug/image.xz" .
-            xz -d image.xz
-            mv image input.img
-            exit 0
-          fi
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
           output="image.$fileext"
