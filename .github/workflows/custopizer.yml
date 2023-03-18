@@ -30,9 +30,11 @@ jobs:
         with:
           workspace: '${{ github.workspace }}/build'
           scripts: '${{ github.workspace }}/scripts'
+          environment: '{ "INSIDEGITHUB": "true" }'
 
       - name: "📦 Package the image"
         uses: OctoPrint/actions/package-rpi-image@main
+        id: package-image
         with:
           image_path: '${{ github.workspace }}/build/output.img'
 
