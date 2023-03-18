@@ -16,6 +16,10 @@ jobs:
 
       - name: "⬇️ Download Raspberry Pi OS Lite"
         run: |
+          filename=$(basename "$filepath")
+          echo $filename
+          echo "${filename##*.}"
+          exit 1
           mkdir build
           cd build
           
