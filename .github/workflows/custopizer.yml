@@ -18,7 +18,9 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.input_image }}" == "debug" ]; then
             mkdir build
-            mv "${{ github.workspace }}/debug/image" input.img
+            cp "${{ github.workspace }}/debug/image.xz" .
+            xz -d image.xz
+            mv image input.img
             exit 0
           fi
           filename=$(basename "${{ github.event.inputs.input_image }}")
