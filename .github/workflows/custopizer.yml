@@ -12,12 +12,11 @@ jobs:
     - name: "⬇ Checkout"
       uses: actions/checkout@v3
 
-    - name: "⬇ Download OctoPi"
-      id: octopi_download
+    - name: "⬇ Download Raspberry Pi OS Lite"
       run: |
         mkdir build
         cd build
-        curl -L -o image.xz https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz
+        curl -L -O image.xz https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz
         
         xz -d image.xz
         rm image.xz
