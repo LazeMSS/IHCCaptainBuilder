@@ -1,0 +1,5 @@
+# enlarge image by 300MB prior to customization
+EDITBASE_IMAGE_ENLARGEROOT=300
+
+# shrink image to minimum size plus 150MB after customization
+EDITBASE_IMAGE_RESIZEROOT=150
