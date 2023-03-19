@@ -43,6 +43,7 @@ jobs:
         uses: OctoPrint/CustoPiZer@main
         with:
           workspace: '${{ github.workspace }}/build'
+          config: '${{ github.workspace }}/config.local'
           scripts: '${{ github.workspace }}/scripts'
           environment: '{ "INSIDEGITHUB": "true" }'
 
