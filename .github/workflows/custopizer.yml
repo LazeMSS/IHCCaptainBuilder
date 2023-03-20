@@ -52,6 +52,8 @@ jobs:
           fi
           ls
           mkdir -p ~/.cache/
+          ls -p ~/.cache/
+          echo ${{ env.md5file }}
           cp input.img ~/.cache/${{ env.md5file }}
           echo "### :rocket: Download completed - stored in ~/.cache/${{ env.md5file }}" >> $GITHUB_STEP_SUMMARY
 
@@ -74,7 +76,7 @@ jobs:
         with:
           image_path: '${{ github.workspace }}/build/output.img'
 
-      - name: "⬆️ Upload Artifact"
+      - name: "⏫ Upload Artifact"
         uses: actions/upload-artifact@v3
         with: 
           path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
