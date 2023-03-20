@@ -37,7 +37,12 @@ jobs:
           
           echo "Downloading $filename into build/$output"
           curl -q --no-progress-meter -L -f ${{ github.event.inputs.input_image }} -o "$output"
-
+          retVal=$?
+          if [ $retVal -ne 0 ]; then
+              echo "Curl failed to download: ${{ github.event.inputs.input_image }}"
+              exit $retVal
+          fi
+          
           # unpack and store
           if [ "$fileext" == "xz" ]; then
             echo "xz archive found"
