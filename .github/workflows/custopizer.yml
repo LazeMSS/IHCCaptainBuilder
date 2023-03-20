@@ -1,5 +1,5 @@
 name: CustoPiZe
-'on':
+on:
   workflow_dispatch:
     inputs:
       input_image:
@@ -8,17 +8,24 @@ name: CustoPiZe
         default: "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz"
 jobs:
   init:
-    name: "Setup vars"
-    run: |
-      echo md5file="$(${{ github.event.inputs.input_image }} | md5sum)" >> "$GITHUB_ENV"
+    name: "Init"
+    steps:
+      - name: "🛒 Checkout repo"
+        uses: actions/checkout@v3
+
+      - name: Set enviroment
+        run: |
+          echo md5file="$(${{ github.event.inputs.input_image }} | md5sum)" >> "$GITHUB_ENV"
+      
+      - name: Download file
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.md5file }}"
       
   build:
     name: "Build"
     runs-on: ubuntu-latest
     steps:
-      - name: "🛒 Checkout repo"
-        uses: actions/checkout@v3
-  
       - name: "⬇️ Download Raspberry Pi image"
         run: |
           echo "${{ env.md5file }}"
