@@ -45,7 +45,7 @@ jobs:
             xz -d "$output"
             mv image input.img
           else      
-            unzip "$output"
+            unzip -q "$output"
             rm "$output"
             IMAGE=$(ls *.img | head -n 1)
             mv "$IMAGE" input.img
