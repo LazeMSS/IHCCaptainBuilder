@@ -17,7 +17,7 @@ jobs:
 
       - name: "🌴 Set enviroment"
         run: |
-          echo md5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum)" >> "$GITHUB_ENV"
+          echo dlmd5file="$(printf '%s' "${{ github.event.inputs.input_image }}" | md5sum)" >> "$GITHUB_ENV"
      
       - name: "💾 Check cache in file"
         id: file-cache
@@ -26,10 +26,10 @@ jobs:
           cache-name: cache-name
         with:
           path: ~/.cache
-          key: ${{ env.md5file }}
+          key: ${{ env.dlmd5file }}
       
       - if: ${{ steps.cache-name.outputs.cache-hit != 'true' }}
-        name: "⏬ Download Raspberry Pi image"
+        name: "⏬ Download the file"
         run: |
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
@@ -50,16 +50,9 @@ jobs:
             IMAGE=$(ls *.img | head -n 1)
             mv "$IMAGE" input.img
           fi
-          pwd
-          ls
           mkdir -p ~/.cache/
-          cd ~/.cache/
-          pwd
-          cd 
-          echo "~/.cache/${{ env.md5file }}"
-          echo ${{ env.md5file }}
-          cp /home/runner/work/IHCCaptainBuilder/IHCCaptainBuilder/build/input.img "~/.cache/${{ env.md5file }}"
-          echo "### :rocket: Download completed - stored in ~/.cache/${{ env.md5file }}" >> $GITHUB_STEP_SUMMARY
+          cp input.img "~/.cache/${{ env.dlmd5file }}"
+          echo "### :rocket: Download completed - stored in ~/.cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
 
   build:
     name: "🏗️ Build image"
