@@ -69,7 +69,6 @@ jobs:
       - name: "🏃 Run CustoPiZer"
         uses: OctoPrint/CustoPiZer@main
         with:
-          config: '${{ github.workspace }}/config.local'
           workspace: '${{ github.workspace }}/build'
           scripts: '${{ github.workspace }}/scripts'
           environment: '{ "INSIDEGITHUB": "true" }'
