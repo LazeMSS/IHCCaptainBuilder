@@ -56,7 +56,7 @@ jobs:
           mkdir -p ../cache
           cp input.img "../cache/${{ env.dlmd5file }}"
           echo "🚀 ${{ github.event.inputs.input_image }} downloaded into ../cache/${{ env.dlmd5file }}"
-          echo "### :rocket: ${{ github.event.inputs.input_image }} downloaded ../cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
+          echo "# :rocket: ${{ github.event.inputs.input_image }} downloaded ../cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
 
   build:
     name: "🏗️ Build image"
