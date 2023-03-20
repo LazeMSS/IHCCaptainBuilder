@@ -9,7 +9,7 @@ on:
 
 jobs:
   init:
-    name: "📦 Get the input file"
+    name: "📦 Build custom image..."
     runs-on: ubuntu-latest
     steps:
       - name: "🌴 Find md5sum"
