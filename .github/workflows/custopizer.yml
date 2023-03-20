@@ -81,8 +81,8 @@ jobs:
           name: "image.zip"
           path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
       
-      - if: always()
       - name: "🧹 Cleanup"
+        if: always()
         run: |
           rm build/input.img
 
