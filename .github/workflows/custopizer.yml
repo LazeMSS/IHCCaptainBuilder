@@ -6,6 +6,7 @@ on:
         description: "The base image to use as input for CustoPiZer"
         required: true
         default: "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz"
+
 jobs:
   init:
     name: "Init and download"
@@ -28,7 +29,7 @@ jobs:
           key: ${{ env.md5file }}
       
       - if: ${{ steps.cache-name.outputs.cache-hit != 'true' }}
-      - name: "⬇️ Download Raspberry Pi image"
+        name: "⬇️ Download Raspberry Pi image"
         run: |
           echo "${{ env.md5file }}"
           filename=$(basename "${{ github.event.inputs.input_image }}")
