@@ -36,7 +36,7 @@ jobs:
           output="image.$fileext"
           
           echo "Downloading $filename into build/$output"
-          curl -q --no-progress-meter -L -o "$output" ${{ github.event.inputs.input_image }}
+          curl -q --no-progress-meter -L -f ${{ github.event.inputs.input_image }} -o "$output"
 
           # unpack and store
           if [ "$fileext" == "xz" ]; then
