@@ -19,7 +19,7 @@ jobs:
         run: |
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | cut -b1-32)" >> "$GITHUB_ENV"
 
-      - name: "💾 Is img file cached"
+      - name: "💾 Is the file/URL cached"
         id: file-cache
         uses: actions/cache@v3
         env:
