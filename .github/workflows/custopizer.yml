@@ -15,11 +15,11 @@ jobs:
       - name: "🛒 Checkout basic repo"
         uses: actions/checkout@v3
 
-      - name: "🌴 Find md5sum"
+      - name: "🌴 Find md5sum of URL"
         run: |
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | cut -b1-32)" >> "$GITHUB_ENV"
 
-      - name: "💾 Check if file is cached"
+      - name: "💾 Check if URL img is cached"
         id: file-cache
         uses: actions/cache@v3
         env:
@@ -29,7 +29,7 @@ jobs:
           key: ${{ env.dlmd5file }}
       
       - if: ${{ steps.file-cache.outputs.cache-hit != 'true' }}
-        name: "⏬ Download the file"
+        name: "⏬ Download file"
         run: |
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
@@ -40,11 +40,11 @@ jobs:
 
           # unpack and store
           if [ "$fileext" == "xz" ]; then
-            echo "xz archive found..."
+            echo "xz archive found"
             xz -d "$output"
             mv image dlimg.img
           else      
-            echo "Assuming zip archive..."
+            echo "Assuming zip archive"
             unzip -q "$output"
             rm "$output"
             IMAGE=$(ls *.img | head -n 1)
@@ -56,7 +56,7 @@ jobs:
           cp dlimg.img "cache/${{ env.dlmd5file }}"
           echo "🚀 ${{ github.event.inputs.input_image }} downloaded into cache/${{ env.dlmd5file }}"
 
-      - name: "🚚 Move img from cache to build folder"
+      - name: "🚚 Move from cache to build folder"
         run: |
           mkdir -p build
           cp "cache/${{ env.dlmd5file }}" build/input.img
@@ -65,9 +65,9 @@ jobs:
         uses: OctoPrint/CustoPiZer@main
         with:
           workspace: '${{ github.workspace }}/build'
-          scripts: '${{ github.workspace }}/scripts'
+          scripts: '${{ github.workspace }}/scriptsx'
           environment: '{ "INSIDEGITHUB": "true" }'
-          config: '${{ github.workspace }}/config.local'
+          config: '${{ github.workspace }}/config.localx'
 
       - name: "🧰 Package the image"
         uses: OctoPrint/actions/package-rpi-image@main
