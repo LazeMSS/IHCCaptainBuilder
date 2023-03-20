@@ -9,7 +9,7 @@ on:
 
 jobs:
   init:
-    name: "Init and download"
+    name: "Download input image"
     runs-on: ubuntu-latest
     steps:
       - name: "🛒 Checkout repo"
@@ -19,7 +19,7 @@ jobs:
         run: |
           echo md5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum)" >> "$GITHUB_ENV"
      
-      - name: "Check cache"
+      - name: "💾 Check cache in file"
         id: file-cache
         uses: actions/cache@v3
         env:
@@ -31,7 +31,6 @@ jobs:
       - if: ${{ steps.cache-name.outputs.cache-hit != 'true' }}
         name: "⬇️ Download Raspberry Pi image"
         run: |
-          echo "${{ env.md5file }}"
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
           output="image.$fileext"
@@ -52,4 +51,28 @@ jobs:
             mv "$IMAGE" input.img
           fi
           cp input.img ~/.cache/${{ env.md5file }}
-          echo "Download completed..."
+          echo "### :rocket: Download completed - stored in ~/.cache/${{ env.md5file }}" >> $GITHUB_STEP_SUMMARY
+
+build:
+    name: "🏗️ Build image"
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: "🏃 Run CustoPiZer"
+        uses: OctoPrint/CustoPiZer@main
+        with:
+          workspace: '${{ github.workspace }}/build'
+          config: '${{ github.workspace }}/config.local'
+          scripts: '${{ github.workspace }}/scripts'
+          environment: '{ "INSIDEGITHUB": "true" }'
+
+      - name: "📦 Package the image"
+        uses: OctoPrint/actions/package-rpi-image@main
+        id: package-image
+        with:
+          image_path: '${{ github.workspace }}/build/output.img'
+
+      - name: "⬆️ Upload Artifact"
+        uses: actions/upload-artifact@v3
+        with: 
+          path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
