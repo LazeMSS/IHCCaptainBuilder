@@ -51,7 +51,9 @@ jobs:
           mkdir -p ~/.cache/
           ls ~/.cache/
           touch "horse" ~/.cache/
-          ls ~/.cache/
+          ls ~/.cache/ -l
+          cd ~/.cache/
+          pwd
           cp input.img "~/.cache/${{ env.dlmd5file }}"
           echo "### :rocket: Download completed - stored in ~/.cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
 
