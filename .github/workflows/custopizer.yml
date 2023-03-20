@@ -32,40 +32,32 @@ jobs:
           fileext="${filename##*.}"
           output="image.$fileext"
           
-          mkdir build
-          cd build
-
           echo "Downloading $filename into build/$output"
           curl -q --no-progress-meter -L -o "$output" ${{ github.event.inputs.input_image }}
 
+          mkdir -p build
+          
+          # unpack and store
           if [ "$fileext" == "xz" ]; then
             echo "xz archive found..."
             xz -d "$output"
-            mv image input.img
+            mv image build/input.img
           else      
             echo "Assuming zip archive..."
             unzip -q "$output"
             rm "$output"
-            ls
             IMAGE=$(ls *.img | head -n 1)
-            echo $IMAGE
-            mv "$IMAGE" input.img
+            mv "$IMAGE" build/input.img
           fi
           
           # store in cache
-          mkdir -p ../cache
-          cp input.img "../cache/${{ env.dlmd5file }}"
-          echo "🚀 ${{ github.event.inputs.input_image }} downloaded into ../cache/${{ env.dlmd5file }}"
-          echo "# :rocket: ${{ github.event.inputs.input_image }} downloaded ../cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
+          mkdir -p cache
+          cp build/input.img "cache/${{ env.dlmd5file }}"
+          echo "🚀 ${{ github.event.inputs.input_image }} downloaded into cache/${{ env.dlmd5file }}"
 
-  build:
-    name: "🏗️ Build image"
-    needs: init
-    runs-on: ubuntu-latest
-    steps:
       - name: "🛒 Checkout basic repo"
         uses: actions/checkout@v3
-        
+
       - name: "🏃 Run CustoPiZer"
         uses: OctoPrint/CustoPiZer@main
         with:
