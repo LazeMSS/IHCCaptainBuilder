@@ -15,11 +15,11 @@ jobs:
       - name: "🛒 Checkout basic repo"
         uses: actions/checkout@v3
 
-      - name: "🌴 Find md5sum of URL"
+      - name: "🌴 Find MD5 of URL"
         run: |
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | cut -b1-32)" >> "$GITHUB_ENV"
 
-      - name: "💾 Check if URL img is cached"
+      - name: "💾 Is img file cached"
         id: file-cache
         uses: actions/cache@v3
         env:
@@ -65,9 +65,9 @@ jobs:
         uses: OctoPrint/CustoPiZer@main
         with:
           workspace: '${{ github.workspace }}/build'
-          scripts: '${{ github.workspace }}/scriptsx'
+          scripts: '${{ github.workspace }}/scripts'
           environment: '{ "INSIDEGITHUB": "true" }'
-          config: '${{ github.workspace }}/config.localx'
+          config: '${{ github.workspace }}/config.local'
 
       - name: "🧰 Package the image"
         uses: OctoPrint/actions/package-rpi-image@main
@@ -85,4 +85,5 @@ jobs:
         if: always()
         run: |
           rm -f build/input.img
+          rm -f build/output.img
 
