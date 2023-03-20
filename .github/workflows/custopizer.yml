@@ -50,15 +50,19 @@ jobs:
             IMAGE=$(ls *.img | head -n 1)
             mv "$IMAGE" input.img
           fi
+          pwd
           ls
           mkdir -p ~/.cache/
-          ls -p ~/.cache/
+          cd ~/.cache/
+          pwd
+          cd 
           echo ${{ env.md5file }}
           cp input.img ~/.cache/${{ env.md5file }}
           echo "### :rocket: Download completed - stored in ~/.cache/${{ env.md5file }}" >> $GITHUB_STEP_SUMMARY
 
   build:
     name: "🏗️ Build image"
+    needs: init
     runs-on: ubuntu-latest
     steps:
     
