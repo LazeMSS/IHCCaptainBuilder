@@ -14,8 +14,8 @@ jobs:
     steps:
       - name: "🌴 Set enviroment"
         run: |
-          echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}'
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}')" >> "$GITHUB_ENV"
+          echo "md5sum of \"${{ github.event.inputs.input_image }}\" is \"${{ env.dlmd5file }}\""
      
       - name: "💾 Check if file is cached"
         id: file-cache
@@ -33,30 +33,31 @@ jobs:
           fileext="${filename##*.}"
           output="image.$fileext"
           
-          pwd
-          
           mkdir build
           cd build
 
           echo "Downloading $filename into build/$output"
-
           curl -q --no-progress-meter -L -o "$output" ${{ github.event.inputs.input_image }}
+
           if [ "$fileext" == "xz" ]; then
+            echo "xz archive..."
             xz -d "$output"
             mv image input.img
           else      
+            echo "Assuming zip archive..."
             unzip -q "$output"
             rm "$output"
+            ls
             IMAGE=$(ls *.img | head -n 1)
+            echo $IMAGE
             mv "$IMAGE" input.img
           fi
+          
+          # store in cache
           mkdir -p ../cache
-          ls ../cache -l
-          touch ../cache/horse
-          ls ../cache -l
-          pwd
           cp input.img "../cache/${{ env.dlmd5file }}"
-          echo "### :rocket: Download completed - stored in ../cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
+          echo ":rocket: ${{ github.event.inputs.input_image }} downloaded into ../cache/${{ env.dlmd5file }}"
+          echo "### :rocket: ${{ github.event.inputs.input_image }} downloaded ../cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
 
   build:
     name: "🏗️ Build image"
@@ -83,4 +84,5 @@ jobs:
       - name: "⏫ Upload Artifact"
         uses: actions/upload-artifact@v3
         with: 
+          name: "image.zip"
           path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
