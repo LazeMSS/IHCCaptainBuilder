@@ -1,4 +1,4 @@
-name: CustoPiZe
+name: ":hammer: CustoPiZe"
 on:
   workflow_dispatch:
     inputs:
@@ -9,17 +9,17 @@ on:
 
 jobs:
   init:
-    name: "Download input image"
+    name: ":trumpet: Download input image"
     runs-on: ubuntu-latest
     steps:
       - name: "🛒 Checkout repo"
         uses: actions/checkout@v3
 
-      - name: "Set enviroment"
+      - name: ":palm_tree: Set enviroment"
         run: |
           echo md5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum)" >> "$GITHUB_ENV"
      
-      - name: "💾 Check cache in file"
+      - name: ":floppy_disk: Check cache in file"
         id: file-cache
         uses: actions/cache@v3
         env:
@@ -50,6 +50,7 @@ jobs:
             IMAGE=$(ls *.img | head -n 1)
             mv "$IMAGE" input.img
           fi
+          ls
           cp input.img ~/.cache/${{ env.md5file }}
           echo "### :rocket: Download completed - stored in ~/.cache/${{ env.md5file }}" >> $GITHUB_STEP_SUMMARY
 
