@@ -56,8 +56,9 @@ jobs:
           cd ~/.cache/
           pwd
           cd 
+          echo "~/.cache/${{ env.md5file }}"
           echo ${{ env.md5file }}
-          cp input.img ~/.cache/${{ env.md5file }}
+          cp /home/runner/work/IHCCaptainBuilder/IHCCaptainBuilder/build/input.img "~/.cache/${{ env.md5file }}"
           echo "### :rocket: Download completed - stored in ~/.cache/${{ env.md5file }}" >> $GITHUB_STEP_SUMMARY
 
   build:
