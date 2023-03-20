@@ -15,7 +15,7 @@ jobs:
       - name: "🌴 Set enviroment"
         run: |
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}')" >> "$GITHUB_ENV"
-          echo "md5sum of \"${{ github.event.inputs.input_image }}\" is \"${{ env.dlmd5file }}\""
+          echo "md5sum of \"${{ github.event.inputs.input_image }}\" is \"$dlmd5file\""
      
       - name: "💾 Check if file is cached"
         id: file-cache
@@ -26,7 +26,7 @@ jobs:
           path: ./cache
           key: ${{ env.dlmd5file }}
       
-      - if: ${{ steps.cache-name.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.file-cache.outputs.cache-hit != 'true' }}
         name: "⏬ Download the file"
         run: |
           filename=$(basename "${{ github.event.inputs.input_image }}")
