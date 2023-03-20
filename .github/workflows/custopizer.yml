@@ -12,6 +12,9 @@ jobs:
     name: "📦 Build custom image..."
     runs-on: ubuntu-latest
     steps:
+      - name: "🛒 Checkout basic repo"
+        uses: actions/checkout@v3
+
       - name: "🌴 Find md5sum"
         run: |
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}')" >> "$GITHUB_ENV"
@@ -52,9 +55,6 @@ jobs:
           mkdir -p cache
           cp dlimg.img "cache/${{ env.dlmd5file }}"
           echo "🚀 ${{ github.event.inputs.input_image }} downloaded into cache/${{ env.dlmd5file }}"
-
-      - name: "🛒 Checkout basic repo"
-        uses: actions/checkout@v3
 
       - name: "Move img from cache to build folder"
         run: |
