@@ -56,23 +56,18 @@ jobs:
           cp dlimg.img "cache/${{ env.dlmd5file }}"
           echo "🚀 ${{ github.event.inputs.input_image }} downloaded into cache/${{ env.dlmd5file }}"
 
-      - name: "Move img from cache to build folder"
+      - name: "🚚 Move img from cache to build folder"
         run: |
           mkdir -p build
-          pwd
-          ls -l
-          ls build
           cp "cache/${{ env.dlmd5file }}" build/input.img
-          ls cache -l
-          ls build
 
       - name: "🏃 Run CustoPiZer"
         uses: OctoPrint/CustoPiZer@main
         with:
           workspace: '${{ github.workspace }}/build'
-          config: '${{ github.workspace }}/config.local'
           scripts: '${{ github.workspace }}/scripts'
           environment: '{ "INSIDEGITHUB": "true" }'
+          config: '${{ github.workspace }}/config.localx'
 
       - name: "🧰 Package the image"
         uses: OctoPrint/actions/package-rpi-image@main
@@ -86,7 +81,7 @@ jobs:
           name: "image.zip"
           path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
           
-      - name: "Cleanup"
+      - name: "🧹 Cleanup"
         run: |
               rm build/input.img
 
