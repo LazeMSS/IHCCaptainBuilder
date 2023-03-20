@@ -14,14 +14,24 @@ jobs:
       - name: "🛒 Checkout repo"
         uses: actions/checkout@v3
 
-      - name: Set enviroment
+      - name: "Set enviroment"
         run: |
           echo md5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum)" >> "$GITHUB_ENV"
-      
-      - name: Download file
-        uses: actions/download-artifact@v3
+     
+      - name: "Check cache"
+        id: file-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-name
         with:
-          name: ${{ env.md5file }}"
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.cache
+          key: ${{ env.md5file }}
+
+      - if: ${{ steps.cache-name.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
       
   build:
     name: "Build"
