@@ -16,7 +16,7 @@ jobs:
 
       - name: Set enviroment
         run: |
-          echo md5file="$(${{ github.event.inputs.input_image }} | md5sum)" >> "$GITHUB_ENV"
+          echo md5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum)" >> "$GITHUB_ENV"
       
       - name: Download file
         uses: actions/download-artifact@v3
