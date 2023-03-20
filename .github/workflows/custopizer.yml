@@ -15,7 +15,7 @@ jobs:
       - name: "🌴 Set enviroment"
         run: |
           echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}'
-          echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}'" >> "$GITHUB_ENV"
+          echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}')" >> "$GITHUB_ENV"
      
       - name: "💾 Check if file is cached"
         id: file-cache
