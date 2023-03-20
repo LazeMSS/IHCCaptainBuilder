@@ -23,7 +23,7 @@ jobs:
         env:
           cache-name: cache-name
         with:
-          path: ~/.cache
+          path: ./cache
           key: ${{ env.dlmd5file }}
       
       - if: ${{ steps.cache-name.outputs.cache-hit != 'true' }}
@@ -32,7 +32,9 @@ jobs:
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
           output="image.$fileext"
-
+          
+          pwd
+          
           mkdir build
           cd build
 
@@ -48,14 +50,13 @@ jobs:
             IMAGE=$(ls *.img | head -n 1)
             mv "$IMAGE" input.img
           fi
-          mkdir -p ~/.cache/
-          ls ~/.cache/
-          touch "horse" ~/.cache/
-          ls ~/.cache/ -l
-          cd ~/.cache/
+          mkdir -p ../cache
+          ls ../cache -l
+          touch ../cache/horse
+          ls ../cache -l
           pwd
-          cp input.img "~/.cache/${{ env.dlmd5file }}"
-          echo "### :rocket: Download completed - stored in ~/.cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
+          cp input.img "../cache/${{ env.dlmd5file }}"
+          echo "### :rocket: Download completed - stored in ../cache/${{ env.dlmd5file }}" >> $GITHUB_STEP_SUMMARY
 
   build:
     name: "🏗️ Build image"
