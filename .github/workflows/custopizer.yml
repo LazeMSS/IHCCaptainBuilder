@@ -52,25 +52,3 @@ jobs:
           fi
           cp input.img ~/.cache/${{ env.md5file }}
           echo "Download completed..."
-  build:
-    name: "Build"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "🏃 Run CustoPiZer"
-        uses: OctoPrint/CustoPiZer@main
-        with:
-          workspace: '${{ github.workspace }}/build'
-          config: '${{ github.workspace }}/config.local'
-          scripts: '${{ github.workspace }}/scripts'
-          environment: '{ "INSIDEGITHUB": "true" }'
-
-      - name: "📦 Package the image"
-        uses: OctoPrint/actions/package-rpi-image@main
-        id: package-image
-        with:
-          image_path: '${{ github.workspace }}/build/output.img'
-
-      - name: "⬆️ Upload Artifact"
-        uses: actions/upload-artifact@v3
-        with: 
-          path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
