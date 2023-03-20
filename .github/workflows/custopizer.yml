@@ -35,7 +35,7 @@ jobs:
           fileext="${filename##*.}"
           output="image.$fileext"
           
-          echo "Downloading $filename into build/$output"
+          echo "Trying to download $filename into build/$output"
           curl -q --no-progress-meter -L -f ${{ github.event.inputs.input_image }} -o "$output"
           retVal=$?
           if [ $retVal -ne 0 ]; then
