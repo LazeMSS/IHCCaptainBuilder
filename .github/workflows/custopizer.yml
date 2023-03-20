@@ -35,25 +35,28 @@ jobs:
           echo "Downloading $filename into build/$output"
           curl -q --no-progress-meter -L -o "$output" ${{ github.event.inputs.input_image }}
 
-          mkdir -p build
-          
           # unpack and store
           if [ "$fileext" == "xz" ]; then
             echo "xz archive found..."
             xz -d "$output"
-            mv image build/input.img
+            mv image dlimg.img
           else      
             echo "Assuming zip archive..."
             unzip -q "$output"
             rm "$output"
             IMAGE=$(ls *.img | head -n 1)
-            mv "$IMAGE" build/input.img
+            mv "$IMAGE" dlimg.img
           fi
           
           # store in cache
           mkdir -p cache
-          cp build/input.img "cache/${{ env.dlmd5file }}"
+          cp dlimg.img "cache/${{ env.dlmd5file }}"
           echo "🚀 ${{ github.event.inputs.input_image }} downloaded into cache/${{ env.dlmd5file }}"
+      
+      - name: "Move img from cache to build folder"
+        run: |
+          mkdir -p build
+          cp "cache/${{ env.dlmd5file }}" build/input.img
 
       - name: "🛒 Checkout basic repo"
         uses: actions/checkout@v3
@@ -77,3 +80,8 @@ jobs:
         with: 
           name: "image.zip"
           path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
+          
+      - name: "Cleanup"
+        run: |
+              rm build/input.img
+
