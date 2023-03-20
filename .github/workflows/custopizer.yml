@@ -12,6 +12,9 @@ jobs:
     name: "📦 Get the input file"
     runs-on: ubuntu-latest
     steps:
+      - name: "🛒 Checkout basic repo"
+        uses: actions/checkout@v3
+
       - name: "🌴 Find md5sum"
         run: |
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}')" >> "$GITHUB_ENV"
