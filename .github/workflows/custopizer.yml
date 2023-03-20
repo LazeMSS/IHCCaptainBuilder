@@ -56,7 +56,6 @@ jobs:
     name: "Build"
     runs-on: ubuntu-latest
     steps:
-    
       - name: "🏃 Run CustoPiZer"
         uses: OctoPrint/CustoPiZer@main
         with:
