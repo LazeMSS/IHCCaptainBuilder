@@ -53,7 +53,7 @@ jobs:
           cp input.img ~/.cache/${{ env.md5file }}
           echo "### :rocket: Download completed - stored in ~/.cache/${{ env.md5file }}" >> $GITHUB_STEP_SUMMARY
 
-build:
+  build:
     name: "🏗️ Build image"
     runs-on: ubuntu-latest
     steps:
