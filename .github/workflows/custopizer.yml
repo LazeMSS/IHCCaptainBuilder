@@ -9,6 +9,7 @@ on:
 jobs:
   init:
     name: "Init"
+    runs-on: ubuntu-latest
     steps:
       - name: "🛒 Checkout repo"
         uses: actions/checkout@v3
