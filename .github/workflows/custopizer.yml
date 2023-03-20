@@ -17,7 +17,7 @@ jobs:
 
       - name: "🌴 Find md5sum"
         run: |
-          echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | awk '{print $1}')" >> "$GITHUB_ENV"
+          echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | cut -b1-32)" >> "$GITHUB_ENV"
 
       - name: "💾 Check if file is cached"
         id: file-cache
@@ -67,7 +67,7 @@ jobs:
           workspace: '${{ github.workspace }}/build'
           scripts: '${{ github.workspace }}/scripts'
           environment: '{ "INSIDEGITHUB": "true" }'
-          config: '${{ github.workspace }}/config.localx'
+          config: '${{ github.workspace }}/config.local'
 
       - name: "🧰 Package the image"
         uses: OctoPrint/actions/package-rpi-image@main
@@ -83,5 +83,5 @@ jobs:
           
       - name: "🧹 Cleanup"
         run: |
-              rm build/input.img
+          rm build/input.img
 
