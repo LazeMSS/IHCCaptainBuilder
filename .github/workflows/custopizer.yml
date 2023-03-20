@@ -8,7 +8,7 @@ on:
         default: "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-02-22/2023-02-21-raspios-bullseye-armhf-lite.img.xz"
 jobs:
   init:
-    name: "Init"
+    name: "Init and download"
     runs-on: ubuntu-latest
     steps:
       - name: "🛒 Checkout repo"
@@ -24,23 +24,13 @@ jobs:
         env:
           cache-name: cache-name
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ~/.cache
           key: ${{ env.md5file }}
-
-      - if: ${{ steps.cache-name.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: npm list
       
-  build:
-    name: "Build"
-    runs-on: ubuntu-latest
-    steps:
+      - if: ${{ steps.cache-name.outputs.cache-hit != 'true' }}
       - name: "⬇️ Download Raspberry Pi image"
         run: |
           echo "${{ env.md5file }}"
-          exit 1
           filename=$(basename "${{ github.event.inputs.input_image }}")
           fileext="${filename##*.}"
           output="image.$fileext"
@@ -51,7 +41,6 @@ jobs:
           echo "Downloading $filename into build/$output"
 
           curl -q --no-progress-meter -L -o "$output" ${{ github.event.inputs.input_image }}
-
           if [ "$fileext" == "xz" ]; then
             xz -d "$output"
             mv image input.img
@@ -61,9 +50,13 @@ jobs:
             IMAGE=$(ls *.img | head -n 1)
             mv "$IMAGE" input.img
           fi
-
+          cp input.img ~/.cache/${{ env.md5file }}
           echo "Download completed..."
-
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+    
       - name: "🏃 Run CustoPiZer"
         uses: OctoPrint/CustoPiZer@main
         with:
