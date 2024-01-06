@@ -32,6 +32,11 @@ jobs:
         name: "⏬ Download file"
         run: |
           filename=$(basename "${{ github.event.inputs.input_image }}")
+          # Using the symlink for the latest lets lookup the real filename redirect
+          if [ "$filename" == "raspios_lite_armhf_latest" ]; then
+            filename=$(wget -O /dev/null -o - --max-redirect=0 https://downloads.raspberrypi.org/raspios_lite_armhf_latest 2>/dev/null| sed -n "s/^Location: \(.*\) \[following\]$/\1/p")
+            echo "Latest raspios resolved to: $filename"
+          fi
           fileext="${filename##*.}"
           output="image.$fileext"
           
