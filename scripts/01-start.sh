@@ -8,10 +8,18 @@ set +x
 echo_green -e "\nStarting IHC Captain installer script\n"
 
 # get the installer script (new for now)
-wget -q -O installIHC.sh "jemi.dk/ihc/files/install-new?$(date +%s)" || true
-chmod +x ./installIHC.sh ||true
-# build the image as beta
-./installIHC.sh beta buildimg || true
+if [ -n "$BUILDBETAIMG" ]; then
+  wget -q -O installIHC.sh "jemi.dk/ihc/files/install-new" || true
+  chmod +x ./installIHC.sh ||true
+  # build the image as beta
+  ./installIHC.sh beta buildimg $XTRABUILDPARAM || true
+else
+  wget -q -O installIHC.sh "jemi.dk/ihc/files/install" || true
+  chmod +x ./installIHC.sh ||true
+  # build the image as beta
+  ./installIHC.sh buildimg $XTRABUILDPARAM || true
+fi
+
 rm installIHC.sh || true
 
 # set the date if possible to make the default log files start from the build time of the image
