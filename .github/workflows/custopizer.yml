@@ -6,7 +6,9 @@ on:
         description: "The base image to use as input for CustoPiZer"
         required: true
         default: "https://downloads.raspberrypi.org/raspios_lite_armhf_latest"
-
+      extrainstallparam:
+        description: "Extra installer parameters"
+        default: ""
 jobs:
   init:
     name: "📦 Build custom image..."
@@ -76,7 +78,7 @@ jobs:
         with:
           workspace: '${{ github.workspace }}/build'
           scripts: '${{ github.workspace }}/scripts'
-          environment: '{ "INSIDEGITHUB": "true" }'
+          environment: '{ "INSIDEGITHUB": "true", "XTRABUILDPARAM": "github.event.inputs.extrainstallparam" }'
           config: '${{ github.workspace }}/config.local'
 
       - name: "🧰 Package the image"
