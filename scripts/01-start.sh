@@ -5,18 +5,24 @@ source /common.sh
 install_cleanup_trap
 
 set +x
-echo_green -e "\nStarting IHC Captain installer script\n"
 
-# get the installer script (new for now)
-if [ -n "$BUILDBETAIMG" ]; then
+# get the installer script
+if $BUILDBETAIMG ; then
+  echo_green -e "\nStarting IHC Captain BETA installer script\n"
+  if [ -n "$XTRABUILDPARAM" ]; then
+    echo_green -e "\nExtra build params: $XTRABUILDPARAM\n"
+  fi
   wget -q -O installIHC.sh "jemi.dk/ihc/files/install-new" || true
   chmod +x ./installIHC.sh ||true
-  # build the image as beta
-  ./installIHC.sh beta buildimg $XTRABUILDPARAM || true
+  # build the image as beta with xtra params if any
+  ./installIHC.sh buildimg beta $XTRABUILDPARAM || true
 else
+  echo_green -e "\nStarting IHC Captain installer script\n"
+  if [ -n "$XTRABUILDPARAM" ]; then
+    echo_green -e "\nExtra build params: $XTRABUILDPARAM\n"
+  fi
   wget -q -O installIHC.sh "jemi.dk/ihc/files/install" || true
   chmod +x ./installIHC.sh ||true
-  # build the image as beta
   ./installIHC.sh buildimg $XTRABUILDPARAM || true
 fi
 
