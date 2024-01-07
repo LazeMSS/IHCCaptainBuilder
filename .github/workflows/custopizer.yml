@@ -9,6 +9,11 @@ on:
       extrainstallparam:
         description: "Extra installer parameters"
         default: ""
+      buildbetaimg:
+        description: "Build beta image?"
+        default: false
+        required: true
+        type: boolean
 jobs:
   init:
     name: "📦 Build custom image..."
