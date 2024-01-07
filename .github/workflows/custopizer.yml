@@ -83,7 +83,7 @@ jobs:
         with:
           workspace: '${{ github.workspace }}/build'
           scripts: '${{ github.workspace }}/scripts'
-          environment: '{ "INSIDEGITHUB": "true", "XTRABUILDPARAM": ${{ github.event.inputs.extrainstallparam }}, "BUILDBETAIMG": ${{ github.event.inputs.buildbetaimg }} }'
+          environment: '{ "INSIDEGITHUB": "true", "XTRABUILDPARAM": "${{ github.event.inputs.extrainstallparam }}", "BUILDBETAIMG": "${{ github.event.inputs.buildbetaimg }}" }'
           config: '${{ github.workspace }}/config.local'
 
       - name: "🧰 Package the image"
