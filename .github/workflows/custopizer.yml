@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "🛒 Checkout basic repo"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: "🌴 Find MD5 of URL"
         run: |
@@ -86,14 +86,18 @@ jobs:
           environment: '{ "INSIDEGITHUB": "true", "XTRABUILDPARAM": "${{ github.event.inputs.extrainstallparam }}", "BUILDBETAIMG": "${{ github.event.inputs.buildbetaimg }}" }'
           config: '${{ github.workspace }}/config.local'
 
+      - name: "Rename the file"
+        run: |
+          mv ${{ github.workspace }}/build/output.img ${{ github.workspace }}/build/captain.img
+        
       - name: "🧰 Package the image"
         uses: OctoPrint/actions/package-rpi-image@main
         id: package-image
         with:
-          image_path: '${{ github.workspace }}/build/output.img'
+          image_path: '${{ github.workspace }}/build/captain.img'
 
       - name: "⏫ Upload Artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with: 
           name: "captain.img.zip"
           compression-level: 0
@@ -104,4 +108,4 @@ jobs:
         run: |
           rm -f build/input.img
           rm -f build/output.img
-
+          rm -f build/captain.img
