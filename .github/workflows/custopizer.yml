@@ -95,7 +95,8 @@ jobs:
       - name: "⏫ Upload Artifact"
         uses: actions/upload-artifact@v3
         with: 
-          name: "image.zip"
+          name: "captain.img.zip"
+          compression-level: 0
           path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
       
       - name: "🧹 Cleanup"
