@@ -1,0 +1,29 @@
+name: "💾 Build IHC Captain RPI image"
+env:
+  outputimgname: "captain.img"
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_image:
+        description: "The base image to use as input for CustoPiZer"
+        required: true
+        default: "https://downloads.raspberrypi.org/raspios_lite_armhf_latest"
+      extrainstallparam:
+        description: "Extra installer parameters"
+        default: ""
+      buildbetaimg:
+        description: "Build beta image?"
+        default: false
+        required: true
+        type: boolean
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print variable if not empty
+        if: "${{ github.event.inputs.buildbetaimg == true }}"
+        run: echo "outputimgname=captain.img" >> $GITHUB_ENV
+      - name: Test
+        run: echo $outputimgname
+
