@@ -1,4 +1,4 @@
-name: "🛠️ CustoPiZe"
+name: "💾 Build IHC Captain RPI image"
 on:
   workflow_dispatch:
     inputs:
@@ -16,17 +16,17 @@ on:
         type: boolean
 jobs:
   init:
-    name: "📦 Build custom image..."
+    name: "💾 Build IHC Captain RPI image"
     runs-on: ubuntu-latest
     steps:
       - name: "🛒 Checkout basic repo"
         uses: actions/checkout@v4
 
-      - name: "🌴 Find MD5 of URL"
+      - name: "🔎 Find MD5 of Raspberry Pi os image URL"
         run: |
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | cut -b1-32)" >> "$GITHUB_ENV"
 
-      - name: "💾 Is the file/URL cached"
+      - name: "📂 Is the Raspberry Pi OS image cached"
         id: file-cache
         uses: actions/cache@v3
         env:
@@ -36,7 +36,7 @@ jobs:
           key: ${{ env.dlmd5file }}
       
       - if: ${{ steps.file-cache.outputs.cache-hit != 'true' }}
-        name: "⏬ Download file"
+        name: "📥 Download file"
         run: |
           filename=$(basename "${{ github.event.inputs.input_image }}")
           # Using the symlink for the latest lets lookup the real filename redirect
@@ -78,7 +78,7 @@ jobs:
           mkdir -p build
           cp "cache/${{ env.dlmd5file }}" build/input.img
 
-      - name: "🏃 Run CustoPiZer"
+      - name: "🏃 Run CustoPiZer to build image and install IHC Captain"
         uses: OctoPrint/CustoPiZer@main
         with:
           workspace: '${{ github.workspace }}/build'
@@ -86,22 +86,16 @@ jobs:
           environment: '{ "INSIDEGITHUB": "true", "XTRABUILDPARAM": "${{ github.event.inputs.extrainstallparam }}", "BUILDBETAIMG": "${{ github.event.inputs.buildbetaimg }}" }'
           config: '${{ github.workspace }}/config.local'
 
-      - name: "Rename the file"
+      - name: "✏️ Rename the output file"
         run: |
           mv ${{ github.workspace }}/build/output.img ${{ github.workspace }}/build/captain.img
         
-      - name: "🧰 Package the image"
-        uses: OctoPrint/actions/package-rpi-image@main
-        id: package-image
-        with:
-          image_path: '${{ github.workspace }}/build/captain.img'
-
       - name: "⏫ Upload Artifact"
         uses: actions/upload-artifact@v4
         with: 
           name: "captain.img.zip"
           compression-level: 0
-          path: ${{ github.workspace }}/build/${{ steps.package-image.outputs.zip_name }}
+          path: ${{ github.workspace }}/build/captain.img
       
       - name: "🧹 Cleanup"
         if: always()
