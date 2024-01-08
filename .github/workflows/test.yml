@@ -22,17 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set output to beta name
-        id: SetName
         if: "${{ github.event.inputs.buildbetaimg == 'true' }}"
         run: |
           echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
-          echo "Blah" >> "$GITHUB_OUTPUT"
 
       - name: Summary
-        id: Summary
         run: |
           echo "- Raspberry Pi OS: ${{ inputs.input_image }}" >> $GITHUB_STEP_SUMMARY
           echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}" >> $GITHUB_STEP_SUMMARY
           echo "- Beta build: ${{ inputs.buildbetaimg }}" >> $GITHUB_STEP_SUMMARY
           echo "- Output filename: $outputimgname" >> $GITHUB_STEP_SUMMARY
-          echo "HORSE" >> "$GITHUB_OUTPUT"
