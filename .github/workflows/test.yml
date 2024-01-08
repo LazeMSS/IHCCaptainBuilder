@@ -1,4 +1,4 @@
-name: "💾 Build IHC Captain RPI image"
+name: "💾 Testtte"
 env:
   outputimgname: "captain.img"
 
