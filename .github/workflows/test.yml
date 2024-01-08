@@ -21,8 +21,8 @@ jobs:
   init:
     runs-on: ubuntu-latest
     steps:
-      - name: Print variable if not empty
-        if: "${{ github.event.inputs.buildbetaimg == true }}"
+      - name: Set beta name
+        if: "${{ github.event.inputs.buildbetaimg == 'true' }}"
         run: echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
       - name: Test
         run: echo $outputimgname
