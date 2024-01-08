@@ -23,12 +23,16 @@ jobs:
     steps:
       - name: Set output to beta name
         if: "${{ github.event.inputs.buildbetaimg == 'true' }}"
-        run: echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
+        run: |
+          echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
+          echo "Test" >> "$GITHUB_OUTPUT"
+
       - name: Test
         run: |
           echo "- Raspberry Pi OS: ${{ inputs.input_image }}" >> $GITHUB_STEP_SUMMARY
           echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}" >> $GITHUB_STEP_SUMMARY
           echo "- Beta build: ${{ inputs.buildbetaimg }}" >> $GITHUB_STEP_SUMMARY
           echo "- Output filename: $outputimgname" >> $GITHUB_STEP_SUMMARY
+          echo "Test2" >> "$GITHUB_OUTPUT"
           
 
