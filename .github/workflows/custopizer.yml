@@ -93,7 +93,7 @@ jobs:
       - name: "⏫ Upload Artifact"
         uses: actions/upload-artifact@v4
         with: 
-          name: "captain.img.zip"
+          name: "captain.img"
           compression-level: 7
           retention-days: 30
           path: ${{ github.workspace }}/build/captain.img
