@@ -18,7 +18,8 @@ on:
         required: true
         type: boolean
 jobs:
-  init:
+  build:
+    name: "💾 Build IHC Captain RPI image"
     runs-on: ubuntu-latest
     steps:
       - name: Set output to beta name
@@ -26,16 +27,6 @@ jobs:
         run: |
           echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
 
-      - name: Summary
-        run: |
-          echo "- Raspberry Pi OS: ${{ inputs.input_image }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Beta build: ${{ inputs.buildbetaimg }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Output filename: $outputimgname" >> $GITHUB_STEP_SUMMARY
-  build:
-    name: "💾 Build IHC Captain RPI image"
-    runs-on: ubuntu-latest
-    steps:
       - name: "🛒 Checkout basic repo"
         uses: actions/checkout@v4
 
@@ -114,10 +105,18 @@ jobs:
           compression-level: 7
           retention-days: 30
           path: ${{ github.workspace }}/build/${{ env.outputimgname }}
-      
+          name: "💾 Build IHC Captain RPI image"
+
       - name: "🧹 Cleanup"
         if: always()
         run: |
           rm -f build/input.img
           rm -f build/output.img
           rm -f build/$outputimgname
+        
+      - name: Summary
+        run: |
+          echo "- Raspberry Pi OS: ${{ inputs.input_image }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Beta build: ${{ inputs.buildbetaimg }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Output filename: $outputimgname" >> $GITHUB_STEP_SUMMARY
