@@ -1,4 +1,7 @@
 name: "💾 Build IHC Captain RPI image"
+env:
+  outputimgname: "captain.img"
+
 on:
   workflow_dispatch:
     inputs:
@@ -16,6 +19,20 @@ on:
         type: boolean
 jobs:
   init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set output to beta name
+        if: "${{ github.event.inputs.buildbetaimg == 'true' }}"
+        run: |
+          echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
+
+      - name: Summary
+        run: |
+          echo "- Raspberry Pi OS: ${{ inputs.input_image }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Beta build: ${{ inputs.buildbetaimg }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Output filename: $outputimgname" >> $GITHUB_STEP_SUMMARY
+  build:
     name: "💾 Build IHC Captain RPI image"
     runs-on: ubuntu-latest
     steps:
@@ -88,15 +105,15 @@ jobs:
 
       - name: "✏️ Rename the output file"
         run: |
-          mv ${{ github.workspace }}/build/output.img ${{ github.workspace }}/build/captain.img
+          mv ${{ github.workspace }}/build/output.img ${{ github.workspace }}/build/$outputimgname
         
       - name: "⏫ Upload Artifact"
         uses: actions/upload-artifact@v4
         with: 
-          name: "captain.img"
+          name: ${{ env.outputimgname }}
           compression-level: 7
           retention-days: 30
-          path: ${{ github.workspace }}/build/captain.img
+          path: ${{ github.workspace }}/build/${{ env.outputimgname }}
       
       - name: "🧹 Cleanup"
         if: always()
