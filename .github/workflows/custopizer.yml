@@ -113,7 +113,7 @@ jobs:
           rm -f build/output.img
           rm -f build/$outputimgname
         
-      - name: Summary
+      - name: "📰 Summary"
         run: |
           echo "- Raspberry Pi OS: ${{ inputs.input_image }}" >> $GITHUB_STEP_SUMMARY
           echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}" >> $GITHUB_STEP_SUMMARY
