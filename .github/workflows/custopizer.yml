@@ -105,7 +105,6 @@ jobs:
           compression-level: 7
           retention-days: 30
           path: ${{ github.workspace }}/build/${{ env.outputimgname }}
-          name: "💾 Build IHC Captain RPI image"
 
       - name: "🧹 Cleanup"
         if: always()
