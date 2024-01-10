@@ -28,7 +28,7 @@ jobs:
 
       - name: Set image name
         run: |
-          if ${{ inputs.buildbetaimg }} == "true"; then
+          if "${{ inputs.buildbetaimg }}" == "true"; then
             echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
             exit 0
           fi
