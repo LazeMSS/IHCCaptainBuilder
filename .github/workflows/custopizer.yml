@@ -36,10 +36,10 @@ jobs:
           # find tag and check if numeric/float
           releaseTag=${GITHUB_REF##*/}
           # Tag it
-          if [[ $input =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
+          if [[ $releaseTag =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
             releaseTag="-${releaseTag}"
           else
-            releaseTag="-manual"
+            releaseTag="-notTagged"
           fi
           
           echo "outputimgname=captain${releaseTag}.img" >> $GITHUB_ENV
