@@ -35,6 +35,7 @@ jobs:
 
           # find tag and check if numeric/float
           releaseTag=${GITHUB_REF##*/}
+          echo ${GITHUB_REF##*/}
           # Tag it
           if [[ $releaseTag =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
             releaseTag="-${releaseTag}"
@@ -48,7 +49,7 @@ jobs:
           echo "- Raspberry Pi OS: ${{ inputs.input_image }}"
           echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}"
           echo "- Beta build: ${{ inputs.buildbetaimg }}"
-          echo "- Output filename: $outputimgname"
+          echo "- Output filename: captain${releaseTag}.img"
           echo "- Tag: ${GITHUB_REF##*/}"
       
       - name: "🔎 Find MD5 of Raspberry Pi os image URL"
