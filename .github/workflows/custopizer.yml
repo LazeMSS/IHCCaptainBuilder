@@ -32,6 +32,8 @@ jobs:
             echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
             exit 0
           fi
+          echo "${GITHUB_REF#refs/*/}"
+          echo "${GITHUB_REF##*/}"
           echo $GITHUB_WORKSPACE
           echo ${{ env.GITHUB_WORKSPACE }}
           cd ${{ env.GITHUB_WORKSPACE }}
