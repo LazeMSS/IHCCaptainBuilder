@@ -29,11 +29,13 @@ jobs:
       - name: Set output to beta name
         if: "${{ github.event.inputs.buildbetaimg == 'true' }}"
         run: |
+          echo $(git describe --tags --abbrev=0)
           echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
 
       - name: Set normal output name
         if: "${{ github.event.inputs.buildbetaimg == 'false' }}"
         run: |
+          echo $(git describe --tags --abbrev=0)
           echo "outputimgname=captain-$(git describe --tags --abbrev=0).img" >> $GITHUB_ENV
       
       - name: "🔎 Find MD5 of Raspberry Pi os image URL"
