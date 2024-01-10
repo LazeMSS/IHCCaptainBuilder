@@ -49,6 +49,7 @@ jobs:
           echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}"
           echo "- Beta build: ${{ inputs.buildbetaimg }}"
           echo "- Output filename: $outputimgname"
+          echo "- Tag: ${GITHUB_REF##*/}"
       
       - name: "🔎 Find MD5 of Raspberry Pi os image URL"
         run: |
@@ -139,3 +140,4 @@ jobs:
           echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}" >> $GITHUB_STEP_SUMMARY
           echo "- Beta build: ${{ inputs.buildbetaimg }}" >> $GITHUB_STEP_SUMMARY
           echo "- Output filename: $outputimgname" >> $GITHUB_STEP_SUMMARY
+          echo "- Tag: ${GITHUB_REF##*/}" >> $GITHUB_STEP_SUMMARY
