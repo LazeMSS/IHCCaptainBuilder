@@ -42,7 +42,7 @@ jobs:
           
           echo "outputimgname=captain${releaseTag}.img" >> $GITHUB_ENV
 
-      - name: "🔍 Show version info"
+      - name: "🔍 Show variables for build"
         run: |
           # Debug out
           echo "🟢 Raspberry Pi OS            : ${{ inputs.input_image }}"
