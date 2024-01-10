@@ -46,11 +46,11 @@ jobs:
           echo "outputimgname=captain${releaseTag}.img" >> $GITHUB_ENV
 
           # Debug out
-          echo "- Raspberry Pi OS: ${{ inputs.input_image }}"
-          echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}"
-          echo "- Beta build: ${{ inputs.buildbetaimg }}"
-          echo "- Output filename: captain${releaseTag}.img"
-          echo "- Tag: ${GITHUB_REF##*/}"
+          echo "🟢 Raspberry Pi OS            : ${{ inputs.input_image }}"
+          echo "🟢 Extra installer parameters : ${{ inputs.extrainstallparam }}"
+          echo "🟢 Beta build                 : ${{ inputs.buildbetaimg }}"
+          echo "🟢 Output filename            : captain${releaseTag}.img"
+          echo "🟢 Tag                        : ${GITHUB_REF##*/}"
       
       - name: "🔎 Find MD5 of Raspberry Pi os image URL"
         run: |
