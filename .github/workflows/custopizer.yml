@@ -35,7 +35,7 @@ jobs:
 
           # find tag and check if numeric/float
           releaseTag=${GITHUB_REF##*/}
-          echo ${GITHUB_REF##*/}
+          
           # Tag it
           if [[ $releaseTag =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
             releaseTag="-${releaseTag}"
