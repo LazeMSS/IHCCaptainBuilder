@@ -34,10 +34,10 @@ jobs:
           fi
 
           releaseTag=$(git describe --tags --abbrev=0)
-          if [ -z "$releaseTag" ];
+          if [ -z "$releaseTag" ]; then
             releaseTag=$GITHUB_REF
           fi
-          if [ -z "$releaseTag" ];
+          if [ -z "$releaseTag" ]; then
             releaseTag="-${releaseTag}"
           fi
           echo "outputimgname=captain${releaseTag}.img" >> $GITHUB_ENV
