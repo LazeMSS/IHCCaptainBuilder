@@ -1,8 +1,6 @@
 name: "💾 Build IHC Captain RPI image"
 env:
   outputimgname: "captain.img"
-
-
 on:
   workflow_dispatch:
     inputs:
@@ -23,6 +21,19 @@ jobs:
     name: "💾 Build IHC Captain RPI image"
     runs-on: ubuntu-latest
     steps:
+      - name: "👶 Set img output name"
+        run: |
+          touch "./hest.bin"
+      - name: "upload files"
+        uses: Dylan700/sftp-upload-action@latest
+        with:
+          server: sftp.jemi.dk
+          username: jemi.dk
+          password: ${{secrets.SFTPPASS}}
+          port: 22
+          uploads: |
+             ./test.bin => test.bin
+
       - name: "👶 Set img output name"
         run: |
           if "${{ inputs.buildbetaimg }}" == "true"; then
