@@ -21,20 +21,18 @@ jobs:
     name: "💾 Build IHC Captain RPI image"
     runs-on: ubuntu-latest
     steps:
-      - name: "👶 Set img output name"
-        run: |
-          touch "./hest.bin"
-      - name: "upload files"
-        uses: Dylan700/sftp-upload-action@latest
-        with:
-          server: sftp.jemi.dk
-          username: jemi.dk
-          password: ${{secrets.SFTPPASS}}
-          port: 22
-          uploads: |
-             ./ => /www/
-          ignore: |
-            !hest.bin
+
+      # - name: "upload files"
+      #   uses: Dylan700/sftp-upload-action@latest
+      #   with:
+      #     server: sftp.jemi.dk
+      #     username: jemi.dk
+      #     password: ${{secrets.SFTPPASS}}
+      #     port: 22
+      #     uploads: |
+      #        ./ => /www/ihc/files/
+      #     ignore: |
+      #       !hest.bin
 
       - name: "👶 Set img output name"
         run: |
