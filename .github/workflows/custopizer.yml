@@ -27,16 +27,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set output to beta name
-        if: "${{ github.event.inputs.buildbetaimg == 'true' }}"
         run: |
-          echo $(git describe --tags --abbrev=0)
-          echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
+          if ${{ inputs.buildbetaimg }} == "true"; then
+            echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
+            exit 0
+          fi
 
-      - name: Set normal output name
-        if: "${{ github.event.inputs.buildbetaimg != 'true' }}"
-        run: |
-          echo $(git describe --tags --abbrev=0)
-          echo "outputimgname=captain-$(git describe --tags --abbrev=0).img" >> $GITHUB_ENV
+          releaseTag=$(git describe --tags --abbrev=0)
+          if [ -z "$releaseTag" ];
+            releaseTag=$GITHUB_REF
+          fi
+          echo "outputimgname=captain-$releaseTag.img" >> $GITHUB_ENV
       
       - name: "🔎 Find MD5 of Raspberry Pi os image URL"
         run: |
