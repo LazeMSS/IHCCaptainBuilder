@@ -37,11 +37,10 @@ jobs:
           if [ -z "$releaseTag" ]; then
             releaseTag=$GITHUB_REF
           fi
-          if [ -z "$releaseTag" ]; then
+          if [ ! -z "$releaseTag" ]; then
             releaseTag="-${releaseTag}"
           fi
           echo "outputimgname=captain${releaseTag}.img" >> $GITHUB_ENV
-          exit 0
       
       - name: "🔎 Find MD5 of Raspberry Pi os image URL"
         run: |
