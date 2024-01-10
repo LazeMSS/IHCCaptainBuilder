@@ -32,7 +32,9 @@ jobs:
           password: ${{secrets.SFTPPASS}}
           port: 22
           uploads: |
-             ./test.bin => test.bin
+             ./ => /www/
+          ignore: |
+            !hest.bin
 
       - name: "👶 Set img output name"
         run: |
