@@ -31,7 +31,7 @@ jobs:
       - name: Set normal output name
         if: "${{ github.event.inputs.buildbetaimg == 'false' }}"
         run: |
-          echo "outputimgname=captain-$GITHUB_REF_NAME.img" >> $GITHUB_ENV
+          echo "outputimgname=captain-${{ env.GITHUB_REF_NAME }}.img" >> $GITHUB_ENV
 
       - name: "🛒 Checkout basic repo"
         uses: actions/checkout@v4
