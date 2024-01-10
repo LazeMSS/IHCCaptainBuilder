@@ -23,6 +23,9 @@ jobs:
     name: "💾 Build IHC Captain RPI image"
     runs-on: ubuntu-latest
     steps:
+      - name: "🛒 Checkout basic repo"
+        uses: actions/checkout@v4
+
       - name: Set output to beta name
         if: "${{ github.event.inputs.buildbetaimg == 'true' }}"
         run: |
@@ -31,11 +34,8 @@ jobs:
       - name: Set normal output name
         if: "${{ github.event.inputs.buildbetaimg == 'false' }}"
         run: |
-          echo "outputimgname=captain-${{ env.GITHUB_REF_NAME }}.img" >> $GITHUB_ENV
-
-      - name: "🛒 Checkout basic repo"
-        uses: actions/checkout@v4
-
+          echo "outputimgname=captain-$(git describe --tags --abbrev=0).img" >> $GITHUB_ENV
+      
       - name: "🔎 Find MD5 of Raspberry Pi os image URL"
         run: |
           echo dlmd5file="$(echo -n "${{ github.event.inputs.input_image }}" | md5sum | cut -b1-32)" >> "$GITHUB_ENV"
