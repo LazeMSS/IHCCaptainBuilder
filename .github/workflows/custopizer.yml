@@ -25,12 +25,15 @@ jobs:
     steps:
       - name: "🛒 Checkout basic repo and set name"
         uses: actions/checkout@v4
+
+      - name: Set image name
         run: |
           if "${{ inputs.buildbetaimg }}" == "true"; then
             echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
             exit 0
           fi
 
+          cd $GITHUB_WORKSPACE
           releaseTag=$(git describe --tags --abbrev=0)
           if [ -z "$releaseTag" ]; then
             releaseTag=$GITHUB_REF
