@@ -26,7 +26,7 @@ jobs:
       - name: "🛒 Checkout basic repo"
         uses: actions/checkout@v4
 
-      - name: Set output to beta name
+      - name: Set image name
         run: |
           if ${{ inputs.buildbetaimg }} == "true"; then
             echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
