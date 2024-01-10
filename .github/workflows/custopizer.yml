@@ -33,6 +33,7 @@ jobs:
       #        ./ => /www/ihc/files/
       #     ignore: |
       #       !hest.bin
+      #       !captain-beta.img
 
       - name: "👶 Set img output name"
         run: |
