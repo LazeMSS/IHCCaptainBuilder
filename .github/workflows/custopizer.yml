@@ -32,19 +32,23 @@ jobs:
             echo "outputimgname=captain-beta.img" >> $GITHUB_ENV
             exit 0
           fi
-          echo "${GITHUB_REF#refs/*/}"
-          echo "${GITHUB_REF##*/}"
-          echo $GITHUB_WORKSPACE
-          echo ${{ env.GITHUB_WORKSPACE }}
-          cd ${{ env.GITHUB_WORKSPACE }}
-          releaseTag=$(git describe --tags --abbrev=0)
-          if [ -z "$releaseTag" ]; then
-            releaseTag=$GITHUB_REF
-          fi
-          if [ ! -z "$releaseTag" ]; then
+
+          # find tag and check if numeric/float
+          releaseTag=${GITHUB_REF##*/}
+          # Tag it
+          if [[ $input =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
             releaseTag="-${releaseTag}"
+          else
+            releaseTag="-manual"
           fi
+          
           echo "outputimgname=captain${releaseTag}.img" >> $GITHUB_ENV
+
+          # Debug out
+          echo "- Raspberry Pi OS: ${{ inputs.input_image }}"
+          echo "- Extra installer parameters: ${{ inputs.extrainstallparam }}"
+          echo "- Beta build: ${{ inputs.buildbetaimg }}"
+          echo "- Output filename: $outputimgname"
       
       - name: "🔎 Find MD5 of Raspberry Pi os image URL"
         run: |
