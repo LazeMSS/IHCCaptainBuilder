@@ -72,7 +72,7 @@ jobs:
 
       - name: "📂 Is the Raspberry Pi OS image cached"
         id: file-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-name
         with:
